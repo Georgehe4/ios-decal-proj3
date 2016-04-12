@@ -10,17 +10,15 @@ import UIKit
 
 class SinglePhotoViewController: UIViewController {
     
-    /* Photo in the view */
     var photo: Photo!
-    /* A reference to the likes UILabel to be able to change the like count. */
     var likesLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let screen = UIScreen.mainScreen().bounds.size
-        let photoSize = screen.width*3/4
-        let photoView: UIImageView = UIImageView(frame: CGRectMake(screen.width/2-(photoSize/2), 100, photoSize, photoSize))
+        let UIImageViewSize = screen.width*3/4
+        let photoView: UIImageView = UIImageView(frame: CGRectMake(screen.width/2-(UIImageViewSize/2), 100, UIImageViewSize, UIImageViewSize))
         let url: NSURL! = NSURL(string: photo.stdURL)
         photoView.image = UIImage(data: NSData(contentsOfURL: url)!)
         photoView.layer.cornerRadius = 10.0
@@ -29,38 +27,37 @@ class SinglePhotoViewController: UIViewController {
         photoView.layer.masksToBounds = true
         self.view.addSubview(photoView)
         
-        let user: UILabel = UILabel(frame: CGRectMake(photoView.frame.origin.x, photoView.frame.origin.y + photoSize + 30, photoSize, 20))
+        let user: UILabel = UILabel(frame: CGRectMake(photoView.frame.origin.x, photoView.frame.origin.y + UIImageViewSize + 30, UIImageViewSize, 20))
         user.text = "Username: \(photo.username)"
         user.backgroundColor = UIColor(white: 1, alpha: 1)
         user.textColor = UIColor.blackColor()
         self.view.addSubview(user)
         
         
-        let date: UILabel = UILabel(frame: CGRectMake(photoView.frame.origin.x, user.frame.origin.y + 30, photoSize, 20))
+        let dateUILabel: UILabel = UILabel(frame: CGRectMake(photoView.frame.origin.x, user.frame.origin.y + 30, UIImageViewSize, 20))
         
         let formatter = NSDateFormatter()
         formatter.dateStyle = NSDateFormatterStyle.ShortStyle
         formatter.timeStyle = NSDateFormatterStyle.ShortStyle
         
         let datePosted = NSDate(timeIntervalSince1970: Double(photo.datePosted)!)
-        date.text = "Posted: \(formatter.stringFromDate(datePosted))"
-        date.backgroundColor = UIColor(white: 1, alpha: 1)
-        date.textColor = UIColor.blackColor()
-        self.view.addSubview(date)
+        dateUILabel.text = "Posted: \(formatter.stringFromDate(datePosted))"
+        dateUILabel.backgroundColor = UIColor(white: 1, alpha: 1)
+        dateUILabel.textColor = UIColor.blackColor()
+        self.view.addSubview(dateUILabel)
         
+        let likesUILabel: UILabel = UILabel(frame: CGRectMake(photoView.frame.origin.x, dateUILabel.frame.origin.y + 30, UIImageViewSize*3/4, 20))
+        self.likesLabel = likesUILabel
+        likesUILabel.text = "Likes: \(photo.numLikes)"
+        likesUILabel.backgroundColor = UIColor(white: 1, alpha: 1)
+        likesUILabel.textColor = UIColor.blackColor()
+        self.view.addSubview(likesUILabel)
         
-        let likes: UILabel = UILabel(frame: CGRectMake(photoView.frame.origin.x, date.frame.origin.y + 30, photoSize/2, 20))
-        likesLabel = likes
-        likes.text = "Likes: \(photo.numLikes)"
-        likes.backgroundColor = UIColor(white: 1, alpha: 1)
-        likes.textColor = UIColor.blackColor()
-        self.view.addSubview(likes)
-        
-        let likeButton: UIButton = UIButton(frame: CGRectMake(likes.frame.origin.x + photoSize/2 - 15, likes.frame.origin.y, 30, 30))
+        let likeButton: UIButton = UIButton(frame: CGRectMake(likesUILabel.frame.origin.x + UIImageViewSize/2 - 15, likesUILabel.frame.origin.y, 30, 30))
         likeButton.addTarget(self, action: "likeButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-        likeButton.backgroundColor = UIColor(white: 1, alpha: 1)
         likeButton.setTitle("❤️", forState: UIControlState.Normal)
         likeButton.setTitle("💖", forState: UIControlState.Selected)
+        likeButton.backgroundColor = UIColor(white: 1, alpha: 1)
         
         if (photo.liked!) {
             likeButton.selected = true

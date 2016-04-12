@@ -17,21 +17,20 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
         super.viewDidLoad()
         let api = InstagramAPI()
         api.loadPhotos(didLoadPhotos)
-        
+        self.navigationItem.title = "Popular Images"
+
         
         let screen = UIScreen.mainScreen().bounds.size
-        let layout = UICollectionViewFlowLayout()
         
         
-        collectionView = UICollectionView(frame: CGRectMake(0, 0, screen.width, screen.height), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRectMake(0, 0, screen.width, screen.height), collectionViewLayout: UICollectionViewFlowLayout())
         collectionView!.delegate = self
         collectionView!.dataSource = self
         collectionView!.backgroundColor = UIColor(white: 1, alpha: 1)
         
         
+        collectionView.registerClass(CollectionViewImageCell.self, forCellWithReuseIdentifier: "collectionViewImageCell")
         
-        self.navigationItem.title = "Popular Images"
-        collectionView.registerClass(CollectionViewImageCell.self, forCellWithReuseIdentifier: "collectionViewCell")
         self.view.addSubview(collectionView!)
     }
     
@@ -39,6 +38,10 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     * IMPLEMENT ANY COLLECTION VIEW DELEGATE METHODS YOU FIND NECESSARY
     * Examples include cellForItemAtIndexPath, numberOfSections, etc.
     */
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
     
     func loadImageForCell(photo: Photo, imageView: UIImageView) {
         let url: NSURL! = NSURL(string: photo.stdURL)
@@ -54,14 +57,7 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
         imageView.layer.masksToBounds = true
 
     }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-    }
+   
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(100, 100)
@@ -74,13 +70,17 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
         return 0
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+    }
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let selectedPhoto : Photo! = photos[indexPath.item]
         presentSinglePicture(selectedPhoto)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! CollectionViewImageCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewImageCell", forIndexPath: indexPath) as! CollectionViewImageCell
         loadImageForCell(photos[indexPath.item], imageView: cell.image)
         return cell
     }

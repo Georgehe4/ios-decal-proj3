@@ -17,15 +17,15 @@ class CollectionViewImageCell: UICollectionViewCell {
         contentView.addSubview(image)
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-    
+
         image.frame = self.contentView.bounds
         
         image.image = nil
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
