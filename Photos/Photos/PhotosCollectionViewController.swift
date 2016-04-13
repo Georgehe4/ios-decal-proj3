@@ -26,7 +26,6 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
         collectionView = UICollectionView(frame: CGRectMake(0, 0, screen.width, screen.height), collectionViewLayout: UICollectionViewFlowLayout())
         collectionView!.delegate = self
         collectionView!.dataSource = self
-        collectionView!.backgroundColor = UIColor(white: 1, alpha: 1)
         
         
         collectionView.registerClass(CollectionViewImageCell.self, forCellWithReuseIdentifier: "collectionViewImageCell")

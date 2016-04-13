@@ -13,6 +13,11 @@ class SinglePhotoViewController: UIViewController {
     var photo: Photo!
     var likesLabel: UILabel!
     
+    init(photo: Photo) {
+        super.init(nibName: nil, bundle: nil)
+        self.photo = photo
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,20 +72,6 @@ class SinglePhotoViewController: UIViewController {
         self.view.backgroundColor = UIColor(white: 1, alpha: 1)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    init(photo: Photo) {
-        super.init(nibName: nil, bundle: nil)
-        self.photo = photo
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func likeButtonPressed(sender: UIButton!) {
         if (!photo.liked) {
             sender.selected = true
@@ -94,6 +85,15 @@ class SinglePhotoViewController: UIViewController {
             likesLabel.text = "Likes: \(photo.numLikes)"
             photo.liked = false
         }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 }
